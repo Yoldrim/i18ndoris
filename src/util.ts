@@ -1,6 +1,3 @@
-const fs = require('fs');
-const _path = require('path');
-
 export const keyifyString = (s: string) => (
   s.trim() // remove starting/trailing whitespaces
   .toLowerCase()
@@ -18,18 +15,3 @@ export const createKeyWithContextString = (ctx: string, s: string) => {
 }
 
 export const createKeyFromString = (s: string) => keyifyString(s)
-
-export const readFileJSON = (path: string) => {
-  let file = undefined;
-  try {
-    file = JSON.parse(fs.readFileSync(path, 'utf8'));
-  } catch (e) {
-    console.log(e);
-    throw `Could not read file from location ${process.cwd() + path}.\nTry changing the configPath.`;
-  }
-  return file;
-};
-
-export const writeFileJSON = (path: string, content: any) => {
-  fs.writeFileSync(path, JSON.stringify(content, null, 2));
-};

@@ -10,7 +10,8 @@ import {Message} from "./interfaces/Message";
 import fs from 'fs';
 import path from 'path';
 
-import {createKeyWithContextString, createKeyFromString, readFileJSON, writeFileJSON} from './util'
+import {createKeyWithContextString, createKeyFromString} from './util';
+import {readFileJSON, writeFileJSON} from './fsUtils';
 
 const flatten = (lists: any[]) => lists.reduce((a, b) => a.concat(b), []);
 
@@ -101,7 +102,7 @@ const addMessages = (translationFilePath: string, messages: Message[]) => {
     }
 
     if (newMessages.length > 0) {
-        console.log(`Writing ${newMessages.length} new messages.`);
+        console.log(`Writing ${newMessages.length} new message(s) to ${translationFilePath}.`);
         writeFileJSON(translationFilePath, [...newMessages, ...jsonMessages]);
     }
 };
@@ -121,5 +122,3 @@ const translationFiles = getAllFilesFromRoot(translationsPath, ['json']);
 for(let fileName of translationFiles) {
     addMessages(fileName, messages);
 }
-
-
