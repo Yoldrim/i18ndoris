@@ -1,8 +1,8 @@
-# i18njs
+# i18ndoris
 Internationalization for js made easy! Mostly plug and play, and should work with most js/ts projects. This package can handle both general translations, and context specific.
 
 ### Installation
-1. `yarn add i18njs` or `npm install i18njs`
+1. `yarn add i18ndoris` or `npm install i18ndoris`
 2. Create a folder for your translations, and add files for every language you want to translate to. `./translations/en.json` as an example.
 3. At any root in your project, initialize the package with `init`. This is what it would look like in the `index.js` file of a React project. 
 ```js
@@ -51,7 +51,7 @@ To detect our added messages, we need to run a script which parses the messages 
 ```json
 "scripts": {
     ...
-    "translation": "npx i18njs-update <root of scan> <path to our locales dir>"
+    "translation": "npx i18ndoris-update <root of scan> <path to our locales dir>"
     ...
   },
 ```

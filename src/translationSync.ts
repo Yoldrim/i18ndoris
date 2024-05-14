@@ -1,8 +1,8 @@
 #! /usr/bin/env node
 
 //                relative path to scan files
-// USAGE: npx i18njs-update <root of scan> <translation files>
-// EXAMPLE: npx i18njs-update ./src ./translations
+// USAGE: npx i18ndoris-update <root of scan> <translation files>
+// EXAMPLE: npx i18ndoris-update ./src ./translations
 
 // @ts-ignore
 import {Message} from "./interfaces/Message";
