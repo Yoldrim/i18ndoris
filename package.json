@@ -1,6 +1,6 @@
 {
   "name": "i18ndoris",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Internationalization package for JavaScript/TypeScript",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
