@@ -1,6 +1,6 @@
 {
   "name": "i18ndoris",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Internationalization package for JavaScript/TypeScript",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -23,7 +23,7 @@
     "tsup": "^8.0.2",
     "typescript": "^5.4.5"
   },
-  "keywords": ["Nodejs", "React", "React Native", "i18n", "Translations", "Locale"],
+  "keywords": ["node", "react", "react native", "i18n", "translation", "locale", "localization", "globalization", "internationalization"],
   "repository": {
     "type": "git",
     "url": "https://github.com/Yoldrim/i18ndoris.git"
