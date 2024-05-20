@@ -3,7 +3,7 @@ Internationalization for js made easy! Mostly plug and play, and should work wit
 
 ### Installation
 1. `yarn add i18ndoris` or `npm install i18ndoris`
-2. Create a folder for your translations, and add files for every language you want to translate to. `./translations/en.json` as an example.
+2. Create a folder for your translations, and add files for every language you want to translate to. `./translations/en.json` & `./translations/sv.json` as an example.
 3. At any root in your project, initialize the package with `init`. This is what it would look like in the `index.js` file of a React project. 
 ```js
 ...
@@ -31,6 +31,8 @@ Following is an example in React. We will add some translations, and then switch
 
 Let's add our first translations!
 ```js
+import {t, ct, setTranslations} from 'i18ndoris';
+...
 function App() {
   return (
     <div>
@@ -51,7 +53,7 @@ To detect our added messages, we need to run a script which parses the messages 
 ```json
 "scripts": {
     ...
-    "translation": "npx i18ndoris-update <root of scan> <path to our locales dir>"
+    "translation": "npx i18ndoris-update <root of scan> <path to our translations dir>" // Example: npx i18ndoris-update ./src ./translations
     ...
   },
 ```
@@ -70,7 +72,7 @@ After running this script, our locale files should be populated with the newly a
 ]
 ```
 
-Perfect! Let's translate the strings and test it out.
+Perfect! Let's translate the strings and test it out. This is done by changing the `defaultMesasage` to the translated string.
 
 In React you need to trigger a re-render for the translation changes to take effect, and since our test component is pretty barebones we will have to force a re-render.
 
