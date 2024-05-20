@@ -23,7 +23,7 @@
     "tsup": "^8.0.2",
     "typescript": "^5.4.5"
   },
-  "keywords": ["Nodejs", "React", "React Native"],
+  "keywords": ["Nodejs", "React", "React Native", "i18n", "Translations", "Locale"],
   "repository": {
     "type": "git",
     "url": "https://github.com/Yoldrim/i18ndoris.git"
