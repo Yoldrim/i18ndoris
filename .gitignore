@@ -1,5 +1,6 @@
 /node_modules
 
 /dist
+/tests/translations/translation_setup.ts
 
 .idea

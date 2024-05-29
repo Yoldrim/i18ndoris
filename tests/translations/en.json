@@ -1,0 +1,26 @@
+[
+  {
+    "id": "test_string",
+    "defaultMessage": "Test string"
+  },
+  {
+    "id": "test_string_with_variable_variable",
+    "defaultMessage": "Test string with variable {{variable}}"
+  },
+  {
+    "id": "test_string_with_variable_variable1_and_variable",
+    "defaultMessage": "Test string with variable {{variable1}} and {{variable2}}"
+  },
+  {
+    "id": "context.context_test_string",
+    "defaultMessage": "Context test string"
+  },
+  {
+    "id": "context.context_test_string_with_variable_variable",
+    "defaultMessage": "Context test string with variable {{variable}}"
+  },
+  {
+    "id": "context.context_test_string_with_variable_variable1_and",
+    "defaultMessage": "Context test string with variable {{variable1}} and {{variable2}}"
+  }
+]

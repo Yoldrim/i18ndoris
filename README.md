@@ -1,7 +1,7 @@
 # i18ndoris
 Internationalization for js made easy! Mostly plug and play, and should work with most js/ts projects. This package can handle both general translations, and context specific.
 
-### Installation
+## Installation & Usage
 1. `yarn add i18ndoris` or `npm install i18ndoris`
 2. Create a folder for your translations, and add files for every language you want to translate to. `./translations/en.json` & `./translations/sv.json` as an example.
 3. At any root in your project, initialize the package with `init`. This is what it would look like in the `index.js` file of a React project. 
@@ -36,8 +36,8 @@ import {t, ct, setTranslations} from 'i18ndoris';
 function App() {
   return (
     <div>
-      <Text>{t('Test string')}</Text>
-      <Text>{ct('Landing Page', 'Another test string')}</Text>
+      <p>{t('Test string')}</p>
+      <p>{ct('Landing Page', 'Another test string')}</p>
       <div style={{
           width: 100, 
           height: 40, 
@@ -99,3 +99,11 @@ function App() {
 
 If you've done everything right, it should now look something like this!
 ![](https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOWNvamQ3Z3V6ZXF2YTBzejBsN21uOW85cmVibnAyaG15Z2VmbThzeiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NDbRQNIOj7ejpm2ikj/giphy.gif)
+
+## Adding variables to messages
+This is done by adding a identifier in the messages. It looks like this.
+```js
+t('A test string with the variable {{foo}}', {foo: 'bar'})
+```
+
+This will translate to `"A test string with a variable bar"`

@@ -5,7 +5,7 @@
 // EXAMPLE: npx i18ndoris-update ./src ./translations
 
 // @ts-ignore
-import {Message} from "./interfaces/Message";
+import {Message} from "./interfaces";
 
 import fs from 'fs';
 import path from 'path';
@@ -40,12 +40,14 @@ const getAllFilesFromRoot = (srcPath: string, fileTypes: string[]) => {
             })
             .forEach((item: any) => files.push(`${item.path}/${item.name}`));
     }
+    console.log(files);
     return files;
 }
 
 const getMessagesFromFile = (filePath: string): Message[] => {
     const file = fs.readFileSync(filePath, 'utf8');
     const fileSplit = file.split('\n');
+    console.log(fileSplit);
     const translationRegex = /[^a-zA-Z0-9](t|ct)\(['"`].*['"`].*\)/;
     let translationLineIndices: number[] = [];
 
@@ -53,8 +55,8 @@ const getMessagesFromFile = (filePath: string): Message[] => {
         // messy, matches all t('') and ct('') instances with additional checks
         const regex = new RegExp(translationRegex, 'g');
         if (line.match(regex)) {
-            // console.log(`Found line match at ${index + 1}. Line: ${line}`);
             translationLineIndices.push(index);
+            console.log(`match at index: ${index}`)
         }
     });
 
@@ -78,15 +80,19 @@ const getMessagesFromFile = (filePath: string): Message[] => {
         } else {
             const message = fileSplit[indice]
                 .split(/t\(['"`]/)[1]
-                .split(/['"`]\)/)[0];
-            if (!messages.find((x) => x.id === createKeyFromString(message))) {
+                .split(/['"`]\)/)[0]
+                .replace(/['"`]/g, '')
+                .split(',')
+                .map((x: any) => x.trim());
+            if (!messages.find((x) => x.id === createKeyFromString(message[0]))) {
                 messages.push({
-                    id: createKeyFromString(message),
-                    defaultMessage: message
+                    id: createKeyFromString(message[0]),
+                    defaultMessage: message[0]
                 });
             }
         }
     });
+    console.log(messages);
     return messages;
 };
 
