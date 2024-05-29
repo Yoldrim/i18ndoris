@@ -82,8 +82,8 @@ function App() {
   const forceUpdate = React.useCallback(() => updateState({}), []);
   return (
     <div>
-      <Text>{t('Test string')}</Text>
-      <Text>{ct('Landing Page', 'Another test string')}</Text>
+      <p>{t('Test string')}</Text>
+      <p>{ct('Landing Page', 'Another test string')}</Text>
       <div style={{
           width: 100, 
           height: 40, 
