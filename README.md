@@ -106,4 +106,4 @@ This is done by adding a identifier in the messages. It looks like this.
 t('A test string with the variable {{foo}}', {foo: 'bar'})
 ```
 
-This will translate to `"A test string with a variable bar"`
+This will translate to `"A test string with the variable bar"`
