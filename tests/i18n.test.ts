@@ -36,6 +36,12 @@ test('Changing language back works', () => {
   expect(() => setTranslations('en')).not.toThrow();
 })
 
+test('t() returns correct translation in a string with non letter characters', () => {
+  expect(
+    t('Test string, with weird characters. Wow!')
+  ).toBe('Test string, with weird characters. Wow!');
+})
+
 // ct()
 test('ct() returns translation of test string', () => {
   expect(ct('Context', 'Context test string')).toBe('Context test string');

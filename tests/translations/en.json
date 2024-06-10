@@ -22,5 +22,9 @@
   {
     "id": "context.context_test_string_with_variable_variable1_and",
     "defaultMessage": "Context test string with variable {{variable1}} and {{variable2}}"
+  },
+  {
+    "id": "test_string_with_weird_characters_wow",
+    "defaultMessage": "Test string, with weird characters. Wow!"
   }
 ]
