@@ -32,6 +32,13 @@ test('t() returns Swedish translation of test string with multiple variables', (
   ).toBe('En teststräng med variabel test1 och test2');
 })
 
+test('t() returns Swedish translation of test string with multiple variables and character', () => {
+  expect(
+    t('Test string with variable {{variable1}}/{{variable2}}, wowza!', {variable1: 'test1', variable2: 'test2'})
+  ).toBe('En teststräng med variabel test1/test2, wowza!');
+})
+
+
 test('Changing language back works', () => {
   expect(() => setTranslations('en')).not.toThrow();
 })

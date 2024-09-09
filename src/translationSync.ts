@@ -16,107 +16,117 @@ import {readFileJSON, writeFileJSON} from './fsUtils';
 const flatten = (lists: any[]) => lists.reduce((a, b) => a.concat(b), []);
 
 const getDirectories = (srcPath: string) => {
-    return fs.readdirSync(srcPath)
-        .map((file: string) => path.join(srcPath, file))
-        .filter((p: string) => fs.statSync(p).isDirectory());
+  return fs.readdirSync(srcPath)
+    .map((file: string) => path.join(srcPath, file))
+    .filter((p: string) => fs.statSync(p).isDirectory());
 };
 
 const getDirectoriesRecursive = (src: string): string[] => {
-    return [src, ...flatten(getDirectories(src).map(getDirectoriesRecursive))];
+  return [src, ...flatten(getDirectories(src).map(getDirectoriesRecursive))];
 };
 
 const getAllFilesFromRoot = (srcPath: string, fileTypes: string[]) => {
-    let files: string[] = [];
-    const directories = getDirectoriesRecursive(srcPath);
-    for (let dir of directories) {
-        fs.readdirSync(dir, {withFileTypes: true})
-            .filter((item: any) => {
-                if (item.isDirectory()) {
-                    return false;
-                }
+  let files: string[] = [];
+  const directories = getDirectoriesRecursive(srcPath);
+  for (let dir of directories) {
+    fs.readdirSync(dir, {withFileTypes: true})
+      .filter((item: any) => {
+        if (item.isDirectory()) {
+          return false;
+        }
 
-                const fnSplit = item.name.split('.');
-                return fileTypes.includes(fnSplit[fnSplit.length - 1]);
-            })
-            .forEach((item: any) => files.push(`${item.path}/${item.name}`));
-    }
-    return files;
+        const fnSplit = item.name.split('.');
+        return fileTypes.includes(fnSplit[fnSplit.length - 1]);
+      })
+      .forEach((item: any) => files.push(`${item.path}/${item.name}`));
+  }
+  return files;
 }
 
 const getMessagesFromFile = (filePath: string): Message[] => {
-    const file = fs.readFileSync(filePath, 'utf8');
-    const fileSplit = file.split('\n');
-    const translationRegex = /[^a-zA-Z0-9](t|ct)\(['"`].*['"`].*\)/;
-    let translationLineIndices: number[] = [];
+  const file = fs.readFileSync(filePath, 'utf8');
+  const fileSplit = file.split('\n');
+  const translationRegex = /[^a-zA-Z0-9](t|ct)\(['"`].*['"`].*\)/;
+  let translationLineIndices: number[] = [];
 
-    fileSplit.forEach((line: string, index: number) => {
-        // messy, matches all t('') and ct('') instances with additional checks
-        const regex = new RegExp(translationRegex, 'g');
-        if (line.match(regex)) {
-            translationLineIndices.push(index);
-        }
-    });
+  fileSplit.forEach((line: string, index: number) => {
+    // messy, matches all t('') and ct('') instances with additional checks
+    const regex = new RegExp(translationRegex, 'g');
+    if (line.match(regex)) {
+      translationLineIndices.push(index);
+    }
+  });
 
-    const messages: Message[] = [];
-    translationLineIndices.forEach((indice) => {
-        const regMatch = fileSplit[indice].match(/[^a-zA-Z0-9](t|ct)\(['"`].*['"`].*\)/g)
-        // @ts-ignore
-        if (regMatch[0][1] === 'c') {
-            let message: string = fileSplit[indice]
-                .split(/t\(['"`]/)[1]
-                .split(/['"`]\)/)[0]
-                .replace(/['"`]/g, '')
+  const messages: Message[] = [];
+  translationLineIndices.forEach((indice) => {
+    const regMatch = fileSplit[indice].match(/[^a-zA-Z0-9](t|ct)\(['"`].*['"`].*\)/g)
+    // @ts-ignore
+    if (regMatch[0][1] === 'c') {
+      let message: string = fileSplit[indice]
+        .split(/t\(['"`]/)[1]
+        .split(/['"`]\)/)[0]
+        .replace(/['"`]/g, '')
 
-            let messageSplit;
-            if (message.includes('{{') && message.includes('}}')) {
-                messageSplit =  message.split(',').slice(0, -1);
-                messageSplit = [messageSplit[0], messageSplit.slice(1).join(',').trim()]
-            } else {
-                messageSplit = message.split(',')
-                messageSplit = [messageSplit[0], messageSplit.slice(1).join(',').trim()]
-            }
-            if (!messages.find((x) => x.id === createKeyWithContextString(messageSplit[0], messageSplit[1]))) {
-                messages.push({
-                    id: createKeyWithContextString(messageSplit[0], messageSplit[1]),
-                    defaultMessage: messageSplit[1]
-                })
-            }
-        } else {
-            let message = fileSplit[indice]
-            .split(/t\(['"`]/)[1]
-            .split(/['"`]\)/)[0]
-            .replace(/['"`]/g, '');
+      let messageSplit;
+      if (message.includes('{{') && message.includes('}}')) {
+        messageSplit =  message.split(',').slice(0, -1);
+        messageSplit = [messageSplit[0], messageSplit.slice(1).join(',').trim()]
+      } else {
+        messageSplit = message.split(',')
+        messageSplit = [messageSplit[0], messageSplit.slice(1).join(',').trim()]
+      }
+      if (!messages.find((x) => x.id === createKeyWithContextString(messageSplit[0], messageSplit[1]))) {
+        messages.push({
+          id: createKeyWithContextString(messageSplit[0], messageSplit[1]),
+          defaultMessage: messageSplit[1]
+        })
+      }
+    } else {
 
-            if (message.includes('{{') && message.includes('}}')) {
-                message = message.split(',').slice(0, -1).join(',');
-            }
+      let message = fileSplit[indice]
+        .split(/t\(['"`]/)[1]
+        .split(/['"`]\)/)[0]
+        .replace(/[^\\'"`]['"`]/g, '')
+        .replace(/['"`],/g)
+        .replace(/\\/g, '');
+      console.log('----------');
+      console.log(message);
 
-            if (!messages.find((x) => x.id === createKeyFromString(message))) {
-                messages.push({
-                    id: createKeyFromString(message),
-                    defaultMessage: message
-                });
-            }
-        }
-    });
-    return messages;
+      if (message.includes('{{') && message.includes('}}')) {
+        const messageSplit = message.split(',');
+        message = messageSplit.slice(0, messageSplit.findIndex((s) => /[^{]{[^{]/.test(s)) || -1).join(',');
+      }
+      console.log(message);
+
+      if (!messages.find((x) => x.id === createKeyFromString(message))) {
+        messages.push({
+          id: createKeyFromString(message),
+          defaultMessage: message
+        });
+      }
+      console.log('----------');
+    }
+  });
+  return messages;
 };
 
+const extractStringFrom
+
 const addMessages = (translationFilePath: string, messages: Message[]) => {
-    if (messages === undefined) return;
-    const jsonMessages: Message[] = readFileJSON(translationFilePath);
-    const newMessages = [];
+  if (messages === undefined) return;
+  const jsonMessages: Message[] = readFileJSON(translationFilePath);
+  const newMessages = [];
 
-    for (let message of messages) {
-        if (jsonMessages.find((obj) => obj.id === message.id) === undefined) {
-            newMessages.push(message);
-        }
+  for (let message of messages) {
+    if (jsonMessages.find((obj) => obj.id === message.id) === undefined) {
+      newMessages.push(message);
     }
+  }
 
-    if (newMessages.length > 0) {
-        console.log(`Writing ${newMessages.length} new message(s) to ${translationFilePath}.`);
-        writeFileJSON(translationFilePath, [...jsonMessages, ...newMessages]);
-    }
+  if (newMessages.length > 0) {
+    console.log(`Writing ${newMessages.length} new message(s) to ${translationFilePath}.`);
+    writeFileJSON(translationFilePath, [...jsonMessages, ...newMessages]);
+  }
 };
 
 // @ts-ignore
@@ -127,10 +137,10 @@ const files = getAllFilesFromRoot(srcPath, ['js', 'jsx', 'ts', 'tsx']);
 let messages = [];
 
 for(let fileName of files) {
-    messages.push(...getMessagesFromFile(fileName));
+  messages.push(...getMessagesFromFile(fileName));
 }
 
 const translationFiles = getAllFilesFromRoot(translationsPath, ['json']);
 for(let fileName of translationFiles) {
-    addMessages(fileName, messages);
+  addMessages(fileName, messages);
 }

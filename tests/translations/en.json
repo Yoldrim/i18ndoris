@@ -26,5 +26,17 @@
   {
     "id": "test_string_with_weird_characters_wow",
     "defaultMessage": "Test string, with weird characters. Wow!"
+  },
+  {
+    "id": "test_string_with_variable_variable1variable2_wow",
+    "defaultMessage": "Test string with variable {{variable1}}/{{variable2}}, wowza!, {variable1: test1"
+  },
+  {
+    "id": "test_string_with_variable_variable_variabletes",
+    "defaultMessage": "Test string with variable {{variable}, {variable:tes})"
+  },
+  {
+    "id": "disgusting_string_with_internal_escaped_strings",
+    "defaultMessage": "Disgusting \\\"string\\\", with internal escaped \\`strings\\, {variable1:test, variable2:test})"
   }
 ]
