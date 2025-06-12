@@ -5,12 +5,17 @@
 // EXAMPLE: npx i18ndoris-update ./src ./translations
 
 // @ts-ignore
-import {Message} from "./interfaces";
+import { Message } from "./interfaces";
 
 import fs from 'fs';
 import path from 'path';
 
-import {createKeyWithContextString, createKeyFromString} from './util';
+import {
+    createKeyWithContextString,
+    createKeyFromString,
+    createHashWithContextString,
+    createHashFromString
+} from './util';
 import {readFileJSON, writeFileJSON} from './fsUtils';
 
 const flatten = (lists: any[]) => lists.reduce((a, b) => a.concat(b), []);
@@ -75,9 +80,10 @@ const getMessagesFromFile = (filePath: string): Message[] => {
                 messageSplit = message.split(',')
                 messageSplit = [messageSplit[0], messageSplit.slice(1).join(',').trim()]
             }
-            if (!messages.find((x) => x.id === createKeyWithContextString(messageSplit[0], messageSplit[1]))) {
+            if (!messages.find((x) => x.hash === createHashWithContextString(messageSplit[0], messageSplit[1]))) {
                 messages.push({
                     id: createKeyWithContextString(messageSplit[0], messageSplit[1]),
+                    hash: createHashWithContextString(messageSplit[0], messageSplit[1]),
                     defaultMessage: messageSplit[1]
                 })
             }
@@ -91,9 +97,10 @@ const getMessagesFromFile = (filePath: string): Message[] => {
                 message = message.split(',').slice(0, -1).join(',');
             }
 
-            if (!messages.find((x) => x.id === createKeyFromString(message))) {
+            if (!messages.find((x) => x.hash === createHashFromString(message))) {
                 messages.push({
                     id: createKeyFromString(message),
+                    hash: createHashFromString(message),
                     defaultMessage: message
                 });
             }
